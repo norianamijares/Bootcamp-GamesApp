@@ -46,7 +46,16 @@ const tableBodyHTML = document.getElementById("table-body");
 
 console.log(tableBodyHTML);
 
-games.forEach((juego) => {
+
+
+function pintarJuegos(arrayJuegos) {
+
+  tableBodyHTML.innerHTML = "";
+
+  arrayJuegos.forEach((juego) => {
+
+    console.log(juego.name);
+
     tableBodyHTML.innerHTML += `<tr>
                             <td class="image-cell">
                                 <img src="${juego.image}" alt="" />
@@ -69,7 +78,54 @@ games.forEach((juego) => {
                             </td>
                         </tr>
     `
-});
+  });
+};
+
+pintarJuegos(games);
+
+// function ordenarPorPrecioAscendente() {
+
+//   const juegosAsc = games.toSorted((a, b) => {
+//     return a.price - b.price;
+//   });
+
+//   pintarJuegos(juegosAsc);
+
+// };
+
+// function ordenarPorPrecioDescendente() {
+
+//   const juegosDes = games.toSorted((a, b) => {
+//     return b.price - a.price;
+//   });
+
+//   pintarJuegos(juegosDes);
+
+// };
+
+function ordenarPorPrecio(orden) {
+
+  // if(!orden) {
+  //   pintarJuegos(games);
+  //   return;
+  // }
+
+  const juegosOrdenados = games.toSorted((a, b) => {
+
+    if (orden === "desc") {
+      return b.price - a.price;
+    } else {
+      return a.price - b.price
+    };
+
+  });
+
+  pintarJuegos(juegosOrdenados);
+
+  // const juegosOrdenados = games.toSorted((a, b) => order === "des" ? b.price - a.price : a.price - b.price);
+}
+
 
 //Elaborar una funcion que reciba un array de objetos y pinte cada uno de ellos en el HTML, precisamnte en el body de la tabla de juegos.
 
+//function pintarJuegos()
