@@ -52,17 +52,17 @@
               <input type="text" class="form-control" id="name" placeholder="Nombre del juego">
             </div>
             <div class="col">
-              <label for="genre" class="form-label">Género</label>
-              <select id="genre" class="form-select">
-                <option selected disabled>Selecciona un género</option>
-                <option value="Action">Acción</option>
-                <option value="Adventure">Aventura</option>
-                <option value="Board">Tablero</option>
-                <option value="Sports">Deportes</option>
+              <label for="genre" class="form-label">Categoría</label>
+              <select id="genre" class="form-select" onchange="filtrarPorCategoria(event)">
+                <option selected disabled>Selecciona una categoría</option>
+                <option value="action">Acción</option>
+                <option value="adventure">Aventura</option>
+                <option value="board">Tablero</option>
+                <option value="sports">Deportes</option>
               </select>
             </div>
             <div class="col">
-              <label for="order" class="form-label">Ordenar</label>
+              <label for="order" class="form-label">Precio</label>
               <div>
                 <!-- <button onclick="ordenarPorPrecio()" class="btn btn-sm btn-primary" title="Ordenar precio por defecto">
                   <i class="fa-solid fa-caret-up"></i>
@@ -73,6 +73,19 @@
                 </button>
                 <button onclick="ordenarPorPrecio('desc')" class="btn btn-sm btn-primary"
                   title="Ordenar precio descendente">
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col">
+              <label for="order" class="form-label">Nombre</label>
+              <div>
+                <button onclick="ordenarPorNombreAscendente()" class="btn btn-sm btn-primary"
+                  title="Ordenar nombre ascendente">
+                  <i class="fa-solid fa-caret-up"></i>
+                </button>
+                <button onclick="ordenarPorNombreDescendente()" class="btn btn-sm btn-primary"
+                  title="Ordenar nombre descendente">
                   <i class="fa-solid fa-caret-down"></i>
                 </button>
               </div>

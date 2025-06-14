@@ -11,7 +11,7 @@ const games = [
     id: 1000,
     name: "Super Mario Party™ Jamboree",
     price: 75200,
-    category: "Adventure",
+    category: "Board",
     image:
       "https://assets.nintendo.com/image/fetch/q_auto/f_auto/https://atum-img-lp1.cdn.nintendo.net/i/c/49ff5c5e983d4a2a8682588179d496c5_1024",
   },
@@ -44,8 +44,9 @@ const games = [
 
 const tableBodyHTML = document.getElementById("table-body");
 
-console.log(tableBodyHTML);
+const searchHTML = document.querySelector('#name');
 
+console.log(searchHTML);
 
 
 function pintarJuegos(arrayJuegos) {
@@ -83,49 +84,100 @@ function pintarJuegos(arrayJuegos) {
 
 pintarJuegos(games);
 
-// function ordenarPorPrecioAscendente() {
+function ordenarPorPrecioAscendente() {
 
-//   const juegosAsc = games.toSorted((a, b) => {
-//     return a.price - b.price;
-//   });
-
-//   pintarJuegos(juegosAsc);
-
-// };
-
-// function ordenarPorPrecioDescendente() {
-
-//   const juegosDes = games.toSorted((a, b) => {
-//     return b.price - a.price;
-//   });
-
-//   pintarJuegos(juegosDes);
-
-// };
-
-function ordenarPorPrecio(orden) {
-
-  // if(!orden) {
-  //   pintarJuegos(games);
-  //   return;
-  // }
-
-  const juegosOrdenados = games.toSorted((a, b) => {
-
-    if (orden === "desc") {
-      return b.price - a.price;
-    } else {
-      return a.price - b.price
-    };
-
+  const juegosAsc = games.toSorted((a, b) => {
+    return a.price - b.price;
   });
 
-  pintarJuegos(juegosOrdenados);
+  pintarJuegos(juegosAsc);
 
-  // const juegosOrdenados = games.toSorted((a, b) => order === "des" ? b.price - a.price : a.price - b.price);
-}
+};
 
+function ordenarPorPrecioDescendente() {
 
-//Elaborar una funcion que reciba un array de objetos y pinte cada uno de ellos en el HTML, precisamnte en el body de la tabla de juegos.
+  const juegosDes = games.toSorted((a, b) => {
+    return b.price - a.price;
+  });
 
-//function pintarJuegos()
+  pintarJuegos(juegosDes);
+
+};
+
+// function ordenarPorPrecio(orden) {
+
+//   // if(!orden) {
+//   //   pintarJuegos(games);
+//   //   return;
+//   // }
+
+//   const juegosOrdenados = games.toSorted((a, b) => {
+
+//     if (orden === "desc") {
+//       return b.price - a.price;
+//     } else {
+//       return a.price - b.price
+//     };
+
+//   });
+
+//   pintarJuegos(juegosOrdenados);
+
+//   // const juegosOrdenados = games.toSorted((a, b) => order === "des" ? b.price - a.price : a.price - b.price);
+// }
+
+function ordenarPorNombreAscendente() {
+
+  const juegosAsc = games.toSorted((a, b) => {
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  });
+
+  pintarJuegos(juegosAsc);
+
+};
+
+function ordenarPorNombreDescendente() {
+
+  const juegosDes = games.toSorted((a, b) => {
+    return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+  });
+
+  pintarJuegos(juegosDes);
+
+};
+
+function filtrarPorCategoria(eventito) {
+  const categoria = eventito.target.value.toLowerCase();
+
+  const juegosFiltrados = games.filter((juego) => {
+    if (juego.category.toLowerCase() === categoria) {
+      return true
+    }
+
+    return false
+  });
+
+  pintarJuegos(juegosFiltrados);
+};
+
+// searchHTML.addEventListener(tipoEvent, function() {Algo que voy a hacer cada vez que el evento se dispare});
+
+searchHTML.addEventListener("keyup", function(evt) {
+  const nombreJuegoABuscar = evt.target.value.toLowerCase();
+
+  const juegosFiltradosPorNombre = games.filter((game) => {
+
+    const nombreJuego = game.name.toLowerCase();
+
+    return nombreJuego.includes(nombreJuegoABuscar);
+
+    // if (nombreJuegoABuscar === game.name.toLowerCase()) {
+    //   return true;
+    // }
+
+    // return false;
+  });
+
+  pintarJuegos(juegosFiltradosPorNombre);
+});
+
