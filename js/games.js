@@ -39,22 +39,20 @@ const games = [
     image:
       "https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_656/b_white/f_auto/q_auto/ncom/software/switch/70010000063714/956c12eb1a4c9e68b494cca7efd23d20ba8a789a5eb02589affae64bc6bc3282",
   },
-  
 ];
 
 const tableBodyHTML = document.getElementById("table-body");
 
-const searchHTML = document.querySelector('#name');
+const searchHTML = document.querySelector("#search-name");
 
-console.log(searchHTML);
+const gamesFormHTML = document.getElementById("games-form");
 
+let gameDetailButtons;
 
 function pintarJuegos(arrayJuegos) {
-
   tableBodyHTML.innerHTML = "";
 
   arrayJuegos.forEach((juego) => {
-
     console.log(juego.name);
 
     tableBodyHTML.innerHTML += `<tr>
@@ -64,45 +62,70 @@ function pintarJuegos(arrayJuegos) {
                             <td class="id-cell">${juego.id}</td>
                             <td class="name-cell">${juego.name}</td>
                             <td class="genre-cell">${juego.category}</td>
-                            <td class="price-cell">${juego.price}</td>
+                            <td class="price-cell">$ ${juego.price}</td>
                             <td class="action-cell">
                                 <div class="buttons">
-                                    <button class="button-icon">
-                                        <i class="fa-solid fa-pencil"></i>
+                                    <button class="button-icon" data-game-detail="${juego.id}" data-bs-target="#game-modal" data-bs-toggle="modal">
+                                        <i class="fa-solid fa-eye"></i>
                                     </button>
 
-                                    <button class="button-icon danger">
+                                    <button class="button-icon danger" onclick="borrarJuego(${juego.id})">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
 
                                 </div>
                             </td>
                         </tr>
-    `
+    `;
   });
-};
+
+  gameDetailButtons = document.querySelectorAll("button[data-game-detail]");
+
+  gameDetailButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const id = event.currentTarget.dataset.gameDetail;
+
+      const juego = games.find((game) => {
+        if (game.id == id) {
+          return true;
+        }
+      });
+
+      const modalTitle = document.getElementById("game-modal-title");
+      const modalBody = document.getElementById("game-modal-body");
+
+      modalTitle.innerText = juego.name;
+      modalBody.innerHTML = `<div class="row">
+      <div class="col">
+        <img src="${juego.image}" width="150px" height="150px">
+      </div>
+      <div class="col">
+        <p>${juego.category}</p>
+        <p>$ ${juego.price}</p>
+      </div>
+      
+      </div>`;
+    });
+  });
+}
 
 pintarJuegos(games);
 
 function ordenarPorPrecioAscendente() {
-
   const juegosAsc = games.toSorted((a, b) => {
     return a.price - b.price;
   });
 
   pintarJuegos(juegosAsc);
-
-};
+}
 
 function ordenarPorPrecioDescendente() {
-
   const juegosDes = games.toSorted((a, b) => {
     return b.price - a.price;
   });
 
   pintarJuegos(juegosDes);
-
-};
+}
 
 // function ordenarPorPrecio(orden) {
 
@@ -126,47 +149,44 @@ function ordenarPorPrecioDescendente() {
 //   // const juegosOrdenados = games.toSorted((a, b) => order === "des" ? b.price - a.price : a.price - b.price);
 // }
 
-function ordenarPorNombreAscendente() {
+// function ordenarPorNombreAscendente() {
 
-  const juegosAsc = games.toSorted((a, b) => {
-    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-  });
+//   const juegosAsc = games.toSorted((a, b) => {
+//     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+//   });
 
-  pintarJuegos(juegosAsc);
+//   pintarJuegos(juegosAsc);
 
-};
+// };
 
-function ordenarPorNombreDescendente() {
+// function ordenarPorNombreDescendente() {
 
-  const juegosDes = games.toSorted((a, b) => {
-    return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
-  });
+//   const juegosDes = games.toSorted((a, b) => {
+//     return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+//   });
 
-  pintarJuegos(juegosDes);
+//   pintarJuegos(juegosDes);
 
-};
+// };
 
 function filtrarPorCategoria(eventito) {
   const categoria = eventito.target.value.toLowerCase();
 
   const juegosFiltrados = games.filter((juego) => {
     if (juego.category.toLowerCase() === categoria) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   });
 
   pintarJuegos(juegosFiltrados);
-};
+}
 
-// searchHTML.addEventListener(tipoEvent, function() {Algo que voy a hacer cada vez que el evento se dispare});
-
-searchHTML.addEventListener("keyup", function(evt) {
+searchHTML.addEventListener("keyup", function (evt) {
   const nombreJuegoABuscar = evt.target.value.toLowerCase();
 
   const juegosFiltradosPorNombre = games.filter((game) => {
-
     const nombreJuego = game.name.toLowerCase();
 
     return nombreJuego.includes(nombreJuegoABuscar);
@@ -181,3 +201,45 @@ searchHTML.addEventListener("keyup", function(evt) {
   pintarJuegos(juegosFiltradosPorNombre);
 });
 
+gamesFormHTML.addEventListener("submit", (evt) => {
+  // Función que se ejecuta al escuchar el evento onsubmit
+  evt.preventDefault(); // Evita que se recargue la página al enviar el formulario
+  console.log(evt.target.elements);
+
+  const el = evt.target.elements;
+
+  const newGame = {
+    id: Date.now().toString().slice(-4), // Genera un id único basado en la fecha actual y se mantienen los últimos 4 dígitos
+    name: el.name.value,
+    price: el.price.valueAsNumber,
+    category: el.category.value,
+    image: el.image.value,
+  };
+
+  games.push(newGame); // Agrega el nuevo juego al array de juegos
+  pintarJuegos(games); // Vuelve a pintar la tabla con el nuevo juego
+
+  gamesFormHTML.reset(); // Limpia el formulario después de agregar el juego
+});
+
+function mostrarJuego(id) {}
+
+// 1. Recibo el id para saber que juego borrar
+function borrarJuego(idBorrar) {
+  // 2. Busco la posición del juego en el array games usando findIndex
+  const indice = games.findIndex((juego) => {
+    if (juego.id === idBorrar) {
+      return true;
+    }
+  });
+
+  const borrar = confirm(`¿Estás seguro de borrar el juego?`);
+
+  if (borrar) {
+    // 3. Usamos splice para borrar, pero splice necesita un dato para saber que elemento borrarJuego, ese dato es la posición (indice)
+
+    games.splice(indice, 1);
+
+    pintarJuegos(games);
+  }
+}

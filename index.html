@@ -37,19 +37,51 @@
 
   <main class="container-xl">
     <div class="row">
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-4 mt-4">
         <h2>Formulario</h2>
+        <form class="admin-form" id="games-form">
+          <div class="mb-3">
+            <label for="name" class="form-label">Titulo</label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Mario Party" required
+              minlength="4">
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">URL Imagen</label>
+            <input type="url" name="image" class="form-control" id="image" placeholder="htttps://example.com/image.jpg"
+              required>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="price" class="form-label">Precio</label>
+              <input type="number" name="price" class="form-control" id="price" placeholder="$199.99" required min="1">
+            </div>
+            <div class="col">
+              <label for="category" class="form-label">Categoría</label>
+              <select name="category" id="category" class="form-select">
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option value="action">Acción</option>
+                <option value="adventure">Aventura</option>
+                <option value="board">Tablero</option>
+                <option value="sports">Deportes</option>
+                <option value="role">Rol</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Cargar</button>
+
+        </form>
       </div>
 
       <!-- Segundo Div para filtros y tabla -->
-      <div class="col-12 col-lg-8">
+      <div class="col-12 col-lg-8 mt-4">
 
         <h2>Juegos</h2>
         <div class="p-3 border border-info-subtle">
           <div class="row align-items-center">
             <div class="col">
               <label for="name" class="form-label">Buscar</label>
-              <input type="text" class="form-control" id="name" placeholder="Nombre del juego">
+              <input type="text" class="form-control" id="search-name" placeholder="Nombre del juego">
             </div>
             <div class="col">
               <label for="genre" class="form-label">Categoría</label>
@@ -62,7 +94,7 @@
               </select>
             </div>
             <div class="col">
-              <label for="order" class="form-label">Precio</label>
+              <label for="order" class="form-label">Ordenar</label>
               <div>
                 <!-- <button onclick="ordenarPorPrecio()" class="btn btn-sm btn-primary" title="Ordenar precio por defecto">
                   <i class="fa-solid fa-caret-up"></i>
@@ -77,7 +109,7 @@
                 </button>
               </div>
             </div>
-            <div class="col">
+            <!-- <div class="col">
               <label for="order" class="form-label">Nombre</label>
               <div>
                 <button onclick="ordenarPorNombreAscendente()" class="btn btn-sm btn-primary"
@@ -89,7 +121,7 @@
                   <i class="fa-solid fa-caret-down"></i>
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -107,6 +139,24 @@
           <tbody id="table-body">
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="game-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="game-modal-title">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="game-modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
       </div>
     </div>
   </main>
